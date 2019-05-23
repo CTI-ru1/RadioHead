@@ -17,10 +17,13 @@ PROGMEM static const RH_RF95::ModemConfig MODEM_CONFIG_TABLE[] =
 {
     //  1d,     1e,      26
     { 0x72,   0x74,    0x00}, // Bw125Cr45Sf128 (the chip default)
-    { 0x92,   0x74,    0x00}, // Bw500Cr45Sf128
+    { 0x92,   0x74,    0x00}, // Bw500Cr45Sf128 (SF=7)	BW=500 CRC=4/5 IH=0 DE=1(26:0x00)
     { 0x48,   0x94,    0x00}, // Bw31_25Cr48Sf512
     { 0x78,   0xc4,    0x00}, // Bw125Cr48Sf4096
     { 0x72,   0x94,    0x00}, // Bw125Cr45Sf256
+    { 0x82,   0x74,    0x00}, // Bw250Cr45Sf128 (SF=7)	BW=250 CRC=4/5 IH=0 DE=1(26:0x00)
+    { 0x93,   0x64,    0x00}, // Bw500Cr45Sf64 (SF=6)	BW=500 CRC=4/5 IH=1 DE=1(26:0x00)
+    { 0x92,   0x74,    0x00}, // Bw500Cr45Sf128b (SF=7)	BW=500 CRC=4/5 IH=1 DE=1(26:0x00)
     
 };
 
@@ -103,12 +106,14 @@ bool RH_RF95::init()
 
     // Set up default configuration
     // No Sync Words in LORA mode.
-    setModemConfig(Bw125Cr45Sf256);
-    //setModemConfig(Bw125Cr45Sf128); // Radio default
-    //setModemConfig(Bw125Cr48Sf4096); // slow and reliable?
+    //setModemConfig(Bw125Cr45Sf256);//SF=9
+    //setModemConfig(Bw125Cr45Sf128); // Radio default SF=7
+    //setModemConfig(Bw250Cr45Sf128); // TEST 1
+    //setModemConfig(Bw500Cr45Sf64);// TEST 2
+    setModemConfig(Bw500Cr45Sf128);// TEST 3
     setPreambleLength(8); // Default is 8
     // An innocuous ISM frequency, same as RF22's
-    setFrequency(868.0);
+    setFrequency(868.3);
     // Lowish power
     setTxPower(13);
     //setSpreadingFactor(7);
