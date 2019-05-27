@@ -156,6 +156,11 @@ int8_t RHGenericDriver::lastRssi()
     return _lastRssi;
 }
 
+int8_t RHGenericDriver::lastSNR()
+{
+    return _lastSNR;
+}
+
 RHGenericDriver::RHMode  RHGenericDriver::mode()
 {
     return _mode;

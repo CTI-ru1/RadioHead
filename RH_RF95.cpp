@@ -4,7 +4,7 @@
 // $Id: RH_RF95.cpp,v 1.11 2016/04/04 01:40:12 mikem Exp $
 
 #include <RH_RF95.h>
-
+#include <Console.h>
 // Interrupt vectors for the 3 Arduino interrupt pins
 // Each interrupt can be handled by a different instance of RH_RF95, allowing you to have
 // 2 or more LORAs per Arduino
@@ -113,7 +113,7 @@ bool RH_RF95::init()
     setModemConfig(Bw500Cr45Sf128);// TEST 3
     setPreambleLength(8); // Default is 8
     // An innocuous ISM frequency, same as RF22's
-    setFrequency(868.3);
+    setFrequency(868.7);
     // Lowish power
     setTxPower(13);
     //setSpreadingFactor(7);
@@ -134,6 +134,7 @@ void RH_RF95::handleInterrupt()
     {
 	_rxBad++;
     }
+	
     else if (_mode == RHModeRx && irq_flags & RH_RF95_RX_DONE)
     {
 	// Have received a packet
@@ -149,6 +150,7 @@ void RH_RF95::handleInterrupt()
 	// this is according to the doc, but is it really correct?
 	// weakest receiveable signals are reported RSSI at about -66
 	_lastRssi = spiRead(RH_RF95_REG_1A_PKT_RSSI_VALUE) - 137;
+	_lastSNR =(~spiRead(RH_RF95_REG_19_PKT_SNR_VALUE)+1)/4;
 
 	// We have received a message.
 	validateRxBuf(); 
@@ -220,6 +222,7 @@ void RH_RF95::clearRxBuf()
 
 bool RH_RF95::recv(uint8_t* buf, uint8_t* len)
 {
+
     if (!available())
 	return false;
     if (buf && len)
