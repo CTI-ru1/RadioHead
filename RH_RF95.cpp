@@ -23,7 +23,7 @@ PROGMEM static const RH_RF95::ModemConfig MODEM_CONFIG_TABLE[] =
     { 0x72,   0x94,    0x00}, // Bw125Cr45Sf256
     { 0x82,   0x74,    0x00}, // Bw250Cr45Sf128 (SF=7)	BW=250 CRC=4/5 IH=0 DE=1(26:0x00)
     { 0x93,   0x64,    0x00}, // Bw500Cr45Sf64 (SF=6)	BW=500 CRC=4/5 IH=1 DE=1(26:0x00)
-    { 0x92,   0x74,    0x00}, // Bw500Cr45Sf128b (SF=7)	BW=500 CRC=4/5 IH=1 DE=1(26:0x00)
+    { 0x92,   0x70,    0x00}, // Bw500Cr45Sf128b (SF=7)	BW=500 CRC=4/5 IH=0 DE=1(26:0x00) cr=0
     
 };
 
@@ -110,7 +110,8 @@ bool RH_RF95::init()
     //setModemConfig(Bw125Cr45Sf128); // Radio default SF=7
     //setModemConfig(Bw250Cr45Sf128); // TEST 1
     //setModemConfig(Bw500Cr45Sf64);// TEST 2
-    setModemConfig(Bw500Cr45Sf128);// TEST 3
+    //setModemConfig(Bw500Cr45Sf128);// TEST 3
+    setModemConfig(Bw500Cr45Sf128b);// TEST 4
     setPreambleLength(8); // Default is 8
     // An innocuous ISM frequency, same as RF22's
     setFrequency(868.7);
